@@ -1,0 +1,39 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+const int alcoholSensorPin = A0;
+const int buzzerPin = 11;
+const int ledPin = 7;
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+  lcd.begin(16, 2);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int alcohol_sensor = analogRead(alcoholSensorPin);
+  
+  Serial.println(alcohol_sensor);
+  
+  lcd.setCursor(0, 0);
+  lcd.print("Sensor: ");
+  lcd.print(alcohol_sensor);
+  lcd.print("   ");
+
+  if (alcohol_sensor >= 500) {
+    lcd.setCursor(0, 1);
+    lcd.print("Alcohol detected  ");
+    digitalWrite(buzzerPin, HIGH);
+    digitalWrite(ledPin, HIGH);
+  } else {
+    lcd.setCursor(0, 1);
+    lcd.print("NO alcohol detect ");
+    digitalWrite(buzzerPin, LOW);
+    digitalWrite(ledPin, LOW);
+  }
+
+  delay(500);
+}
